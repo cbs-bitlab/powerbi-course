@@ -1,0 +1,38 @@
+<script>
+    powershell.exe set-executionpolicy unrestricted -force
+    net user user1 PowerBI17 /add
+    net localgroup administrators user1 /add
+    net user user2 PowerBI17 /add
+    net localgroup administrators user2 /add
+</script>
+<powershell>
+    set-executionpolicy unrestricted -force
+    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    choco feature enable -n allowGlobalConfirmation
+    choco install googlechrome -y
+    choco install notepadplusplus -y -y
+    choco install powerbi -y
+    tzutil /s "Romance Standard Time"
+
+    mkdir c:\data
+    cd c:\data
+
+    $url = "https://s3-eu-west-1.amazonaws.com/powerbi-cbs/instagram-posts.csv"
+    $output = "c:\data\instagram-posts.csv"
+    $start_time = Get-Date
+    (New-Object System.Net.WebClient).DownloadFile($url, $output)
+    Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)" 
+
+    $url = "https://s3-eu-west-1.amazonaws.com/powerbi-cbs/twitter-all.csv"
+    $output = "c:\data\twitter-all.csv"
+    $start_time = Get-Date
+    (New-Object System.Net.WebClient).DownloadFile($url, $output)
+    Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)" 
+
+    $url = "https://s3-eu-west-1.amazonaws.com/powerbi-cbs/twitter-roskilde.csv"
+    $output = "c:\data\twitter-roskilde.csv"
+    $start_time = Get-Date
+    (New-Object System.Net.WebClient).DownloadFile($url, $output)
+    Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)" 
+</powershell>
+
